@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design Brief: Halaman Profil Diri (Tugas HTML5)</title>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+  <style>
+    :root {
+      --accent: #1d4ed8;
+      --teks: #1f2937;
+      --samar: #4b5563;
+      --garis: #e5e7eb;
+      --latar-lembut: #f9fafb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+      color: var(--teks);
+      background: #fff;
+      line-height: 1.7;
+    }
+    .wadah { max-width: 56rem; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-size: 1.9rem; margin: 2rem 0 0.25rem; }
+    h2 { font-size: 1.35rem; margin-top: 2.5rem; padding-bottom: 0.35rem; border-bottom: 2px solid var(--garis); }
+    h3 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; }
+    .bar-aksen { width: 75px; height: 5px; border-radius: 999px; background: var(--accent); margin: 0.75rem 0 1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 0.75rem 0 1rem; font-size: 0.92rem; }
+    th, td { border-bottom: 1px solid var(--garis); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+    thead th { border-bottom: 2px solid #d1d5db; }
+    code { background: var(--latar-lembut); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.88em; }
+    .kartu { background: var(--latar-lembut); border: 1px solid var(--garis); border-radius: 10px; padding: 1rem 1.25rem; margin: 0.75rem 0; }
+    .mock { border: 2px dashed var(--garis); border-radius: 10px; padding: 1rem; margin: 0.75rem 0; background: #fff; }
+    .mock .m-header { text-align: center; border-bottom: 1px solid var(--garis); padding-bottom: 0.75rem; }
+    .mock .m-nav a { display: inline-block; margin: 0.35rem 0.6rem 0 0; color: var(--accent); text-decoration: none; }
+    .mock .m-baris { display: flex; gap: 1rem; margin-top: 0.75rem; }
+    .mock .m-foto { flex: 0 0 90px; height: 90px; border-radius: 999px; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--accent); }
+    .mock .m-isi { flex: 1; }
+    .mock .m-kotak { border: 1px solid var(--garis); border-radius: 6px; height: 0.9rem; margin: 0.4rem 0; background: var(--latar-lembut); }
+    .mock .m-tabel { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .mock .m-tabel td { border: 1px solid var(--garis); padding: 0.3rem 0.5rem; font-size: 0.75rem; }
+    footer { margin: 3rem 0 0; padding-top: 1rem; border-top: 1px solid var(--garis); color: var(--samar); font-size: 0.85rem; }
+    a { color: var(--accent); }
+    .mermaid { background: #fff; }
+  </style>
+</head>
+<body>
+  <div class="wadah">
+    <h1>Design Brief: Halaman Profil Diri</h1>
+    <div class="bar-aksen" role="presentation"></div>
+    <p><strong>Fitur:</strong> satu halaman profil diri HTML5 untuk tugas kuliah (Pemrograman Web).
+    <strong>Tujuan bisnis:</strong> memenuhi seluruh kriteria penilaian (struktur 25%, aksesibilitas 25%,
+    metadata 25%, kerapihan 25%) dan lulus pemeriksaan dosen saat URL dibuka di hosting.</p>
+
+    <h2>1. Ringkasan</h2>
+    <p>Ariel diminta membuat halaman profil diri berisi foto, biodata, tabel mata kuliah semester ini,
+    minimal satu tautan, dan metadata (title, description, og:title, og:description, og:image).
+    Yang dikumpulkan hanya URL, jadi halaman harus tampil benar di hosting statis mana pun,
+    tanpa proses build di sisi server. Repo ini adalah situs portofolio Astro milik Ariel;
+    halaman tugas harus hidup berdampingan dengannya tanpa mengubah portofolio.</p>
+
+    <h2>2. Keputusan build</h2>
+    <table>
+      <thead>
+        <tr><th>Keputusan</th><th>Pilihan</th><th>Alasan</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cara memenuhi "buat file index.html"</td>
+          <td>HTML murni tulis tangan di <code>public/profil/index.html</code></td>
+          <td>Tugas menuntut file index.html yang strukturnya dinilai dari kode sumbernya.
+          Folder <code>public/</code> Astro disalin apa adanya saat build, jadi halaman otomatis
+          tersedia di path <code>/profil/</code> kalau repo ini di-deploy, dan foldernya juga bisa
+          di-upload sendiri ke hosting mana pun. Portofolio di root tidak tersentuh.</td>
+        </tr>
+        <tr>
+          <td>Penyajian halaman</td>
+          <td>Satu file mandiri: HTML + CSS inline, nol JavaScript</td>
+          <td>Nol JS berarti nol titik gagal di browser dosen; CSS inline menjaga satu file
+          tetap rapi dibaca. Tidak ada dependensi build.</td>
+        </tr>
+        <tr>
+          <td>Tipografi</td>
+          <td>IBM Plex Mono dari Google Fonts dengan fallback monospace sistem</td>
+          <td>Sama dengan portofolio agar dua situs terasa satu identitas. Kalau font gagal
+          dimuat, halaman tetap terbaca dengan font monospace sistem.</td>
+        </tr>
+        <tr>
+          <td>Foto diri</td>
+          <td>Placeholder PNG digenerate (siluet avatar) berukuran 1200x1200</td>
+          <td>Foto asli milik Ariel dan harus diganti sebelum dikumpulkan. Satu file dipakai
+          untuk tampilan halaman sekaligus og:image. JPG/PNG dipilih karena crawler media sosial
+          tidak mendukung SVG.</td>
+        </tr>
+        <tr>
+          <td>og:image</td>
+          <td>Path relatif <code>foto-profil.png</code> + komentar TODO</td>
+          <td>Domain hosting belum diketahui. Sebagian crawler butuh URL absolut, jadi nilai ini
+          wajib diperbarui begitu domain final ada.</td>
+        </tr>
+        <tr>
+          <td>Data isi (NIM, angkatan, daftar mata kuliah)</td>
+          <td>Diisi nilai wajar sebagai asumsi, ditandai TODO di kode dan laporan</td>
+          <td>Nilai aslinya hanya diketahui Ariel. Struktur halaman tidak berubah saat data
+          diganti, tinggal edit teks.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. Alur utama</h2>
+    <div class="mermaid">
+flowchart TD
+  A[Dosen membuka URL profil] --> B[Browser memuat index.html]
+  B --> C[Metadata terbaca: title, description, og]
+  B --> D[Halaman dirender: header, nav, main, footer]
+  D --> E{Dosen berpindah bagian}
+  E -->|Klik nav| F[Lompat ke anchor section]
+  E -->|Gulir| G[Baca biodata dan tabel mata kuliah]
+  E -->|Klik tautan kontak| H[Email atau situs kampus terbuka]
+  G --> I[Tabel digulir horizontal di layar sempit]
+    </div>
+
+    <h2>4. Peta sistem dan aktor</h2>
+    <div class="kartu">
+      <p><strong>Aktor:</strong> dosen (menilai lewat URL), Ariel (mengganti foto dan data diri),
+      crawler media sosial (membaca og:image saat tautan dibagikan).</p>
+      <p><strong>Peta:</strong> browser dosen meminta <code>/profil/index.html</code> dari hosting statis.
+      Sumbernya bisa repo Astro ini (build menyalin folder <code>public/profil/</code> ke hasil build)
+      atau hasil upload manual folder <code>profil/</code>. Tidak ada server aplikasi, tidak ada database,
+      tidak ada panggilan API dari halaman. Satu-satunya permintaan eksternal adalah font Google Fonts.</p>
+    </div>
+
+    <h2>5. Mockup</h2>
+    <div class="mock" role="presentation">
+      <div class="m-header">
+        <strong>Foto · M. Ariel Davinsyah P.</strong><br />
+        Mahasiswa Teknik Informatika<br />
+        <span class="m-nav">
+          <a href="#tentang">Tentang</a><a href="#biodata">Biodata</a>
+          <a href="#mata-kuliah">Mata Kuliah</a><a href="#kontak">Kontak</a>
+        </span>
+      </div>
+      <div class="m-baris">
+        <div class="m-foto">FOTO</div>
+        <div class="m-isi">
+          <div class="m-kotak" style="width: 95%"></div>
+          <div class="m-kotak" style="width: 88%"></div>
+          <div class="m-kotak" style="width: 60%"></div>
+        </div>
+      </div>
+      <table class="m-tabel" aria-hidden="true">
+        <tr><td>No</td><td>Mata Kuliah</td><td>SKS</td><td>Hari</td></tr>
+        <tr><td>1</td><td>Pemrograman Web</td><td>3</td><td>Selasa</td></tr>
+        <tr><td>2</td><td>Basis Data</td><td>3</td><td>Rabu</td></tr>
+      </table>
+      <div style="border-top: 1px solid var(--garis); margin-top: 0.75rem; padding-top: 0.5rem; font-size: 0.75rem; color: var(--samar);">
+        footer: hak cipta + tautan kembali ke atas
+      </div>
+    </div>
+
+    <h2>6. Skenario negatif</h2>
+    <table>
+      <thead>
+        <tr><th>Kondisi</th><th>Perilaku yang diharapkan</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Layar 375px</td><td>Tidak ada scroll horizontal halaman; tabel bisa digulir sendiri di wadahnya, foto pindah ke atas konten</td></tr>
+        <tr><td>Font Google gagal dimuat</td><td>Fallback font monospace sistem, tata letak tidak rusak</td></tr>
+        <tr><td>JavaScript dimatikan</td><td>Halaman berfungsi penuh karena memang tidak memakai JavaScript</td></tr>
+        <tr><td>Foto belum diganti dari placeholder</td><td>Halaman tetap rapi; alt tetap deskriptif; dicegah lupa lewat catatan TODO di kode dan laporan</td></tr>
+        <tr><td>og:image masih relatif saat URL dibagikan</td><td>Sebagian crawler mengabaikannya; sudah ditandai TODO menunggu domain final</td></tr>
+        <tr><td>Folder profil di-upload tanpa file foto</td><td>Alt text tampil sebagai pengganti, layout tidak kolaps</td></tr>
+      </tbody>
+    </table>
+
+    <h2>7. Titik verifikasi terbuka dan langkah berikutnya</h2>
+    <ul>
+      <li>Ariel mengganti <code>foto-profil.png</code> dengan foto asli (nama file tetap sama supaya og:image ikut benar)</li>
+      <li>Ariel melengkapi NIM, angkatan, dan mengoreksi daftar mata kuliah beserta SKS dan jadwalnya</li>
+      <li>Domain final: <code>https://ariel-chi.vercel.app</code> (deploy via Vercel); og:image sudah diganti ke URL absolut</li>
+      <li>Metode pengumpulan ditentukan: deploy repo Astro (path otomatis /profil/) atau upload folder profil/ ke hosting tugas</li>
+    </ul>
+
+    <footer>
+      Design brief untuk tugas Halaman Profil Diri HTML5. Dibuat 2026-09-17.
+    </footer>
+  </div>
+</body>
+</html>

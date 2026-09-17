@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Laporan E2E: Halaman Profil Diri</title>
+  <style>
+    :root {
+      --accent: #1d4ed8;
+      --teks: #1f2937;
+      --samar: #4b5563;
+      --garis: #e5e7eb;
+      --latar-lembut: #f9fafb;
+      --hijau: #047857;
+      --kuning: #b45309;
+      --merah: #b91c1c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+      color: var(--teks);
+      background: #fff;
+      line-height: 1.7;
+    }
+    .wadah { max-width: 64rem; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-size: 1.8rem; margin: 2rem 0 0.25rem; }
+    h2 { font-size: 1.3rem; margin-top: 2.5rem; padding-bottom: 0.35rem; border-bottom: 2px solid var(--garis); }
+    h3 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; }
+    .bar-aksen { width: 75px; height: 5px; border-radius: 999px; background: var(--accent); margin: 0.75rem 0 1rem; }
+    table { border-collapse: collapse; width: 100%; margin: 0.75rem 0 1rem; font-size: 0.88rem; }
+    th, td { border-bottom: 1px solid var(--garis); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+    thead th { border-bottom: 2px solid #d1d5db; }
+    code { background: var(--latar-lembut); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.88em; }
+    .kartu { background: var(--latar-lembut); border: 1px solid var(--garis); border-radius: 10px; padding: 1rem 1.25rem; margin: 0.75rem 0; }
+    .ok { color: var(--hijau); font-weight: 600; }
+    .belum { color: var(--kuning); font-weight: 600; }
+    .gagal { color: var(--merah); font-weight: 600; }
+    figure { margin: 1rem 0; }
+    figure img { max-width: 100%; border: 1px solid var(--garis); border-radius: 8px; }
+    figcaption { font-size: 0.85rem; color: var(--samar); margin-top: 0.4rem; }
+    ul { padding-left: 1.2rem; }
+    a { color: var(--accent); }
+    footer { margin: 3rem 0 0; padding-top: 1rem; border-top: 1px solid var(--garis); color: var(--samar); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="wadah">
+    <h1>Laporan E2E: Halaman Profil Diri</h1>
+    <div class="bar-aksen" role="presentation"></div>
+
+    <h2>1. Ringkasan dan status verifikasi</h2>
+    <div class="kartu">
+      <p>Halaman profil diri untuk tugas HTML5 sudah dibuat dan diverifikasi di browser sungguhan.
+      Semua ketentuan tugas (struktur semantik, aksesibilitas, metadata, foto, tabel mata kuliah, tautan)
+      terpenuhi di file <code>public/profil/index.html</code>.</p>
+      <ul>
+        <li><strong>Lingkungan:</strong> lokal, <code>python3 -m http.server</code> port 8123, diakses dengan Chrome headless (Windows)</li>
+        <li><strong>Tanggal:</strong> 2026-09-17</li>
+        <li><strong>Entity bukti:</strong> <code>public/profil/index.html</code> + <code>foto-profil.png</code> (placeholder) + <code>favicon.svg</code></li>
+        <li><strong>Cara verifikasi:</strong> screenshot browser nyata (desktop 1280px dan ponsel 375px), cek status aset lewat HTTP, pemeriksaan konsistensi anchor, log console Chrome</li>
+      </ul>
+      <p><strong>Catatan alat:</strong> MCP chrome-devtools tidak tersedia di sesi ini dan Playwright tidak terpasang di lingkungan,
+      jadi verifikasi memakai Chrome headless dengan screenshot nyata. Klik manual beruntun (misal mengklik menu satu per satu)
+      tidak dijalankan; hal yang bergantung klik ditandai "belum diuji langsung" di matriks di bawah.</p>
+    </div>
+
+    <h2>2. Matriks skenario</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 14%">Skenario</th>
+          <th style="width: 22%">Aksi</th>
+          <th style="width: 22%">Expected</th>
+          <th style="width: 20%">Hasil aktual</th>
+          <th style="width: 22%">Cara verifikasi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Muat halaman (happy)</td>
+          <td>Buka <code>/profil/</code></td>
+          <td>Semua bagian ter-render: header, nav, 4 section, footer</td>
+          <td><span class="ok">Sesuai</span></td>
+          <td>Screenshot desktop; console Chrome nol pesan error</td>
+        </tr>
+        <tr>
+          <td>Aset termuat (happy)</td>
+          <td>Browser memuat foto, favicon, font</td>
+          <td>Semua aset 200</td>
+          <td><span class="ok">200 semua</span> (foto image/png, favicon image/svg+xml, font CDN 200)</td>
+          <td><code>curl</code> per aset + screenshot</td>
+        </tr>
+        <tr>
+          <td>Navigasi anchor (happy)</td>
+          <td>Klik menu nav / tautan "Kembali ke atas"</td>
+          <td>Lompat ke section yang dituju</td>
+          <td><span class="ok">Konsisten</span> kelima anchor punya id tujuan; klik manual <span class="belum">belum diuji langsung</span></td>
+          <td>grep pasangan <code>href="#..."</code> dan <code>id="..."</code></td>
+        </tr>
+        <tr>
+          <td>Tabel mata kuliah (happy)</td>
+          <td>Baca section Mata Kuliah</td>
+          <td>Dua tabel dengan caption, header ber-scope, total SKS di tfoot</td>
+          <td><span class="ok">Sesuai</span>, total 15 SKS wajib + 5 SKS pilihan</td>
+          <td>Screenshot desktop</td>
+        </tr>
+        <tr>
+          <td>Tautan eksternal (happy)</td>
+          <td>Klik tautan kampus dan email</td>
+          <td>Situs kampus terbuka di tab baru; email membuka klien mail</td>
+          <td><span class="ok">uinsgd.ac.id 200</span>; mailto <span class="belum">belum diuji</span> (butuh klien mail)</td>
+          <td><code>curl -I</code> ke situs kampus</td>
+        </tr>
+        <tr>
+          <td>Layar 375px (edge)</td>
+          <td>Buka di lebar 375px</td>
+          <td>Satu kolom, tanpa scroll horizontal halaman, tabel digulir di wadahnya</td>
+          <td><span class="ok">Sesuai</span>, foto pindah ke atas, nav melipat dua baris</td>
+          <td>Screenshot ponsel</td>
+        </tr>
+        <tr>
+          <td>JavaScript dimatikan (negatif)</td>
+          <td>Matikan JS lalu muat halaman</td>
+          <td>Halaman berfungsi penuh</td>
+          <td><span class="ok">Berlaku pasti</span>: halaman memang tidak memuat satu pun script</td>
+          <td>Pemeriksaan isi file (tidak ada tag script)</td>
+        </tr>
+        <tr>
+          <td>Font gagal dimuat (negatif)</td>
+          <td>Blokir fonts.googleapis.com</td>
+          <td>Fallback font monospace sistem dipakai</td>
+          <td><span class="belum">Belum diuji langsung</span>; fallback stack sudah ada di CSS</td>
+          <td>Pemeriksaan kode font-family</td>
+        </tr>
+        <tr>
+          <td>Foto hilang (edge)</td>
+          <td>Hapus foto lalu muat</td>
+          <td>Alt text tampil, layout tidak kolaps</td>
+          <td><span class="belum">Belum diuji langsung</span>; alt deskriptif dan dimensi eksplisit sudah dipasang</td>
+          <td>Pemeriksaan atribut img</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. Bukti screenshot</h2>
+    <figure>
+      <img src="images/profil-desktop.png" alt="Tangkapan layar halaman profil pada desktop 1280px: header dengan nama dan navigasi, foto bulat, biodata, dua tabel mata kuliah, kontak, dan footer" />
+      <figcaption>Desktop 1280px: seluruh halaman dari header sampai footer.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/profil-mobile.png" alt="Tangkapan layar halaman profil pada lebar 375px: layout satu kolom, foto di atas, tabel digulir dalam wadahnya" />
+      <figcaption>Ponsel 375px: layout satu kolom, tanpa scroll horizontal halaman.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/brief.png" alt="Tangkapan layar design brief halaman profil yang ter-render lengkap dengan diagram Mermaid" />
+      <figcaption>Design brief <code>docs/halaman-profil/index.html</code>: ter-render penuh, diagram Mermaid jadi.</figcaption>
+    </figure>
+
+    <h2>4. Katalog regresi</h2>
+    <div class="kartu">
+      <p>Halaman baru, belum ada riwayat bug yang pernah di-fixed pada halaman ini:
+      render pertama di Chrome langsung bersih (console nol pesan error, semua aset 200).
+      Kalau nanti muncul bug, catat di sini dengan pola: pemicu, gejala, akar masalah, perilaku setelah perbaikan, cara mereproduksi.</p>
+    </div>
+
+    <h2>5. Coverage matrix (ketentuan tugas)</h2>
+    <table>
+      <thead>
+        <tr><th>Ketentuan tugas</th><th>Status</th><th>Bukti</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>File <code>index.html</code></td><td><span class="ok">Ada</span></td><td><code>public/profil/index.html</code></td></tr>
+        <tr><td>Struktur HTML5 benar</td><td><span class="ok">Ada</span></td><td>DOCTYPE, lang, charset, viewport; view-source rapi</td></tr>
+        <tr><td>Elemen semantik header, nav, main, section, footer</td><td><span class="ok">Semua dipakai</span></td><td>Plus figure, figcaption, address, dl</td></tr>
+        <tr><td>Foto diri dengan alt</td><td><span class="ok">Ada</span> (placeholder)</td><td><code>foto-profil.png</code> + alt deskriptif; foto asli menunggu Ariel</td></tr>
+        <tr><td>Biodata singkat</td><td><span class="ok">Ada</span></td><td>Section Tentang + dl Biodata</td></tr>
+        <tr><td>Heading h1, h2, h3</td><td><span class="ok">Semua dipakai</span></td><td>Satu h1, empat h2, tiga h3</td></tr>
+        <tr><td>Tabel mata kuliah semester ini</td><td><span class="ok">Ada</span></td><td>Dua tabel wajib dan pilihan + total SKS</td></tr>
+        <tr><td>Minimal 1 link</td><td><span class="ok">Ada</span></td><td>Mailto, situs kampus, anchor nav (lebih dari satu)</td></tr>
+        <tr><td>Metadata title</td><td><span class="ok">Ada</span></td><td>Tag title terisi</td></tr>
+        <tr><td>Metadata description</td><td><span class="ok">Ada</span></td><td>Meta description terisi</td></tr>
+        <tr><td>Metadata og:title</td><td><span class="ok">Ada</span></td><td>Meta property og:title</td></tr>
+        <tr><td>Metadata og:description</td><td><span class="ok">Ada</span></td><td>Meta property og:description</td></tr>
+        <tr><td>Metadata og:image</td><td><span class="ok">Ada</span> (absolut)</td><td><code>https://ariel-chi.vercel.app/profil/foto-profil.png</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>6. Yang harus dilakukan sebelum dikumpulkan</h2>
+    <ul>
+      <li>Ganti <code>foto-profil.png</code> dengan foto asli (nama file tetap sama)</li>
+      <li>Isi NIM dan angkatan (sekarang tanda strip, ada TODO di kode)</li>
+      <li>Koreksi daftar mata kuliah, SKS, hari, dan waktu sesuai KRS asli (sekarang asumsi)</li>
+      <li>Push commit ke GitHub agar Vercel otomatis mendeploy, lalu kumpulkan URL <code>https://ariel-chi.vercel.app/profil/</code> ke LMS</li>
+    </ul>
+
+    <footer>
+      Laporan E2E untuk halaman profil tugas HTML5. Dibuat 2026-09-17, diverifikasi dengan Chrome headless + screenshot nyata.
+    </footer>
+  </div>
+</body>
+</html>

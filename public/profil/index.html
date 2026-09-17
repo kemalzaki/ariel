@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Profil Diri · M. Ariel Davinsyah P.</title>
+  <meta name="description" content="Halaman profil M. Ariel Davinsyah P., mahasiswa Teknik Informatika UIN Sunan Gunung Djati Bandung: biodata singkat, mata kuliah semester ini, dan informasi kontak." />
+
+  <!-- Metadata Open Graph untuk pratinjau tautan di media sosial -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:title" content="Profil Diri · M. Ariel Davinsyah P." />
+  <meta property="og:description" content="Biodata, mata kuliah semester ini, dan kontak M. Ariel Davinsyah P., mahasiswa Teknik Informatika UIN Sunan Gunung Djati Bandung." />
+  <meta property="og:image" content="https://ariel-chi.vercel.app/profil/foto-profil.png" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* Palet mengikuti situs portofolio: aksen biru di atas putih, teks abu-abu */
+    :root {
+      --aksen: #1d4ed8;
+      --teks: #1f2937;
+      --teks-samar: #4b5563;
+      --garis: #e5e7eb;
+      --latar-lembut: #f9fafb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Mono", ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+      color: var(--teks);
+      background: #fff;
+      line-height: 1.7;
+    }
+
+    .wadah {
+      max-width: 64rem;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Tautan lompat untuk pengguna keyboard, hanya terlihat saat difokuskan */
+    .lompat {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      z-index: 10;
+      padding: 0.5rem 1rem;
+      background: var(--aksen);
+      color: #fff;
+      border-radius: 0.375rem;
+      text-decoration: none;
+      transition: top 0.2s ease-out;
+    }
+    .lompat:focus { top: 1rem; }
+
+    a { color: var(--aksen); }
+    a:hover { text-decoration: none; }
+    a:focus-visible,
+    .gulir-tabel:focus-visible {
+      outline: 2px solid var(--aksen);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ---- Kepala halaman ---- */
+    .kepala {
+      padding: 4rem 0 2.5rem;
+      text-align: center;
+    }
+    .kepala h1 {
+      margin: 0;
+      font-size: clamp(1.75rem, 5vw, 2.75rem);
+      letter-spacing: -0.02em;
+      color: #111827;
+    }
+    .kepala .tagline {
+      margin: 0.75rem auto 0;
+      max-width: 38rem;
+      color: var(--teks-samar);
+    }
+    .bar-aksen {
+      width: 75px;
+      height: 5px;
+      margin: 1.25rem auto;
+      border-radius: 999px;
+      background: var(--aksen);
+    }
+
+    nav .daftar-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 2rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    nav a {
+      font-weight: 500;
+      color: var(--teks-samar);
+      text-decoration: none;
+    }
+    nav a:hover { color: var(--aksen); }
+
+    /* ---- Bagian isi ---- */
+    section { padding: 2.5rem 0; }
+    #biodata, #kontak { background: var(--latar-lembut); }
+
+    h2 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      letter-spacing: -0.01em;
+      color: #111827;
+    }
+    h2 + .bar-aksen { margin: 0.5rem 0 1.5rem; }
+    h3 {
+      margin: 1.75rem 0 0.5rem;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+
+    .tentang-grid {
+      display: grid;
+      grid-template-columns: 16rem minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    figure { margin: 0; text-align: center; }
+    figure img {
+      width: 14rem;
+      height: 14rem;
+      max-width: 100%;
+      border-radius: 9999px;
+      border: 5px solid #dbeafe;
+      object-fit: cover;
+    }
+    figcaption {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--teks-samar);
+    }
+
+    .bio p { margin: 0 0 1rem; color: var(--teks-samar); }
+    .bio p:first-child { margin-top: 0.25rem; }
+
+    .keahlian {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .keahlian li {
+      padding: 0.375rem 1rem;
+      background: #f3f4f6;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* ---- Biodata ---- */
+    .biodata {
+      margin: 0;
+      display: grid;
+      grid-template-columns: 12rem minmax(0, 1fr);
+      row-gap: 0;
+    }
+    .biodata .baris {
+      display: contents;
+    }
+    .biodata dt {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--garis);
+      font-weight: 600;
+    }
+    .biodata dd {
+      margin: 0;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--garis);
+      color: var(--teks-samar);
+    }
+    .biodata .baris:last-child dt,
+    .biodata .baris:last-child dd { border-bottom: 0; }
+
+    /* ---- Tabel mata kuliah ---- */
+    .gulir-tabel {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      min-width: 34rem;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    caption {
+      padding-bottom: 0.5rem;
+      text-align: left;
+      font-size: 0.875rem;
+      color: var(--teks-samar);
+    }
+    thead th {
+      padding: 0.625rem 0.75rem;
+      border-bottom: 2px solid #d1d5db;
+      text-align: left;
+      color: #111827;
+    }
+    tbody th,
+    tbody td {
+      padding: 0.625rem 0.75rem;
+      border-bottom: 1px solid var(--garis);
+      text-align: left;
+      color: var(--teks-samar);
+      font-weight: 400;
+    }
+    tbody th { color: var(--teks); }
+    tbody tr:nth-child(even) { background: var(--latar-lembut); }
+    th.no, td.no, th.sks, td.sks { text-align: center; }
+    tfoot td {
+      padding: 0.625rem 0.75rem;
+      border-top: 2px solid var(--aksen);
+      font-weight: 600;
+      color: var(--teks);
+    }
+
+    /* ---- Kontak ---- */
+    address {
+      font-style: normal;
+      color: var(--teks-samar);
+    }
+    address ul {
+      margin: 0.5rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    address li { margin: 0.375rem 0; }
+
+    /* ---- Kaki halaman ---- */
+    .kaki {
+      padding: 2rem 0 3rem;
+      border-top: 1px solid var(--garis);
+      font-size: 0.875rem;
+      color: var(--teks-samar);
+    }
+    .kaki .wadah {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .kaki p { margin: 0; }
+
+    /* ---- Layar sempit ---- */
+    @media (max-width: 640px) {
+      .kepala { padding-top: 3rem; }
+      .tentang-grid { grid-template-columns: 1fr; }
+      figure { margin-bottom: 1.5rem; }
+      .biodata { grid-template-columns: 1fr; }
+      .biodata dt { border-bottom: 0; padding-bottom: 0; }
+      .biodata dd { padding-top: 0.125rem; }
+    }
+
+    /* Hormati preferensi gerak minimal: hanya transisi kecil di tautan lompat */
+    @media (prefers-reduced-motion: reduce) {
+      .lompat { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="lompat" href="#konten">Langsung ke konten</a>
+
+  <header class="kepala">
+    <div class="wadah">
+      <h1>M. Ariel Davinsyah P.</h1>
+      <p class="tagline">Mahasiswa Teknik Informatika · UIN Sunan Gunung Djati Bandung</p>
+      <div class="bar-aksen" role="presentation"></div>
+      <nav aria-label="Navigasi utama">
+        <ul class="daftar-nav">
+          <li><a href="#tentang">Tentang Saya</a></li>
+          <li><a href="#biodata">Biodata</a></li>
+          <li><a href="#mata-kuliah">Mata Kuliah</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="konten">
+    <section id="tentang" aria-labelledby="judul-tentang">
+      <div class="wadah">
+        <h2 id="judul-tentang">Tentang Saya</h2>
+        <div class="bar-aksen" role="presentation"></div>
+
+        <div class="tentang-grid">
+          <figure>
+            <img
+              src="foto-profil.png"
+              alt="Foto M. Ariel Davinsyah P., mahasiswa Teknik Informatika UIN Sunan Gunung Djati Bandung"
+              width="1200"
+              height="1200"
+            />
+            <figcaption>M. Ariel Davinsyah P.</figcaption>
+          </figure>
+
+          <div class="bio">
+            <p>
+              Saya mahasiswa Teknik Informatika di UIN Sunan Gunung Djati Bandung yang senang
+              membangun perangkat lunak, dari tampilan antarmuka sampai logika di balik layar.
+              Mempelajari cara kerja sebuah aplikasi dari ujung ke ujung adalah bagian yang
+              paling saya nikmati dari dunia rekayasa perangkat lunak.
+            </p>
+            <p>
+              Di luar perkuliahan saya aktif bermain catur. Permainan ini melatih saya
+              menyusun langkah beberapa langkah ke depan, kebiasaan yang ternyata juga
+              berguna saat merancang dan menulis kode.
+            </p>
+
+            <h3>Fokus dan Minat</h3>
+            <ul class="keahlian">
+              <li>Frontend</li>
+              <li>Backend</li>
+              <li>Catur</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="biodata" aria-labelledby="judul-biodata">
+      <div class="wadah">
+        <h2 id="judul-biodata">Biodata</h2>
+        <div class="bar-aksen" role="presentation"></div>
+
+        <dl class="biodata">
+          <div class="baris">
+            <dt>Nama Lengkap</dt>
+            <dd>M. Ariel Davinsyah P.</dd>
+          </div>
+          <div class="baris">
+            <!-- TODO: isi NIM asli -->
+            <dt>NIM</dt>
+            <dd>&mdash;</dd>
+          </div>
+          <div class="baris">
+            <dt>Program Studi</dt>
+            <dd>Teknik Informatika</dd>
+          </div>
+          <div class="baris">
+            <dt>Fakultas</dt>
+            <dd>Sains dan Teknologi</dd>
+          </div>
+          <div class="baris">
+            <dt>Universitas</dt>
+            <dd>
+              <a href="https://uinsgd.ac.id/" target="_blank" rel="noopener noreferrer">
+                UIN Sunan Gunung Djati Bandung
+              </a>
+            </dd>
+          </div>
+          <div class="baris">
+            <!-- TODO: isi angkatan asli -->
+            <dt>Angkatan</dt>
+            <dd>&mdash;</dd>
+          </div>
+          <div class="baris">
+            <dt>Domisili</dt>
+            <dd>Bandung</dd>
+          </div>
+          <div class="baris">
+            <dt>Email</dt>
+            <dd><a href="mailto:putmarildav@gmail.com">putmarildav@gmail.com</a></dd>
+          </div>
+          <div class="baris">
+            <dt>Hobi</dt>
+            <dd>Bermain catur dan mengoding</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="mata-kuliah" aria-labelledby="judul-matkul">
+      <div class="wadah">
+        <h2 id="judul-matkul">Mata Kuliah Semester Ini</h2>
+        <div class="bar-aksen" role="presentation"></div>
+        <p>Semester Ganjil 2026/2027 &middot; Teknik Informatika</p>
+
+        <!-- TODO: sesuaikan daftar mata kuliah, SKS, dan jadwal dengan KRS asli -->
+        <h3>Mata Kuliah Wajib</h3>
+        <div class="gulir-tabel" role="region" aria-label="Tabel mata kuliah wajib" tabindex="0">
+          <table>
+            <caption>Mata kuliah wajib Semester Ganjil 2026/2027</caption>
+            <thead>
+              <tr>
+                <th class="no" scope="col">No</th>
+                <th scope="col">Mata Kuliah</th>
+                <th class="sks" scope="col">SKS</th>
+                <th scope="col">Hari</th>
+                <th scope="col">Waktu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="no" scope="row">1</th>
+                <td>Pemrograman Web</td>
+                <td class="sks">3</td>
+                <td>Selasa</td>
+                <td>07.00&ndash;09.30</td>
+              </tr>
+              <tr>
+                <th class="no" scope="row">2</th>
+                <td>Rekayasa Perangkat Lunak</td>
+                <td class="sks">3</td>
+                <td>Selasa</td>
+                <td>13.00&ndash;15.30</td>
+              </tr>
+              <tr>
+                <th class="no" scope="row">3</th>
+                <td>Basis Data</td>
+                <td class="sks">3</td>
+                <td>Rabu</td>
+                <td>10.00&ndash;12.30</td>
+              </tr>
+              <tr>
+                <th class="no" scope="row">4</th>
+                <td>Jaringan Komputer</td>
+                <td class="sks">3</td>
+                <td>Kamis</td>
+                <td>07.00&ndash;09.30</td>
+              </tr>
+              <tr>
+                <th class="no" scope="row">5</th>
+                <td>Sistem Operasi</td>
+                <td class="sks">3</td>
+                <td>Jumat</td>
+                <td>07.00&ndash;09.30</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">Total</td>
+                <td class="sks">15</td>
+                <td colspan="2">SKS</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <h3>Mata Kuliah Pilihan</h3>
+        <div class="gulir-tabel" role="region" aria-label="Tabel mata kuliah pilihan" tabindex="0">
+          <table>
+            <caption>Mata kuliah pilihan Semester Ganjil 2026/2027</caption>
+            <thead>
+              <tr>
+                <th class="no" scope="col">No</th>
+                <th scope="col">Mata Kuliah</th>
+                <th class="sks" scope="col">SKS</th>
+                <th scope="col">Hari</th>
+                <th scope="col">Waktu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="no" scope="row">1</th>
+                <td>Kecerdasan Buatan</td>
+                <td class="sks">3</td>
+                <td>Rabu</td>
+                <td>13.00&ndash;15.30</td>
+              </tr>
+              <tr>
+                <th class="no" scope="row">2</th>
+                <td>Keamanan Informasi</td>
+                <td class="sks">2</td>
+                <td>Kamis</td>
+                <td>10.00&ndash;11.40</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">Total</td>
+                <td class="sks">5</td>
+                <td colspan="2">SKS</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontak" aria-labelledby="judul-kontak">
+      <div class="wadah">
+        <h2 id="judul-kontak">Kontak</h2>
+        <div class="bar-aksen" role="presentation"></div>
+
+        <address>
+          Ingin terhubung? Silakan lewat salah satu jalur berikut:
+          <ul>
+            <li>Email: <a href="mailto:putmarildav@gmail.com">putmarildav@gmail.com</a></li>
+            <li>
+              Kampus:
+              <a href="https://uinsgd.ac.id/" target="_blank" rel="noopener noreferrer">uinsgd.ac.id</a>
+            </li>
+          </ul>
+        </address>
+      </div>
+    </section>
+  </main>
+
+  <footer class="kaki">
+    <div class="wadah">
+      <p>&copy; 2026 M. Ariel Davinsyah P. Halaman profil diri, dibuat dengan HTML5.</p>
+      <p><a href="#konten">Kembali ke atas</a></p>
+    </div>
+  </footer>
+</body>
+</html>
